@@ -3,6 +3,10 @@
 #include<vector>
 #include <iomanip>
 
+// git add README.md priorityscheduling.cpp priorityscheduling-win.cpp
+// git commit -m "Priority Based Meeting Scheduler"
+// git push origin main
+
 using namespace std;
 
 int64_t i,j,n,num;
