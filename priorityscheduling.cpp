@@ -8,6 +8,7 @@ using namespace std;
 int64_t i,j,n,num;
 
 void largeInput();
+void breakFunction();
 
 void heroArea(){
     cout << "\t\t-------------------------------------------------\n";
@@ -16,8 +17,11 @@ void heroArea(){
 }
 
 void endProgram() {
+    heroArea();
     cout << "\n\tHave a great day ahead...";
-    cout << "\n\n\n";
+    cout << "\n\n";
+    breakFunction();
+    system("clear");
     exit(0);
 }
 
@@ -37,9 +41,7 @@ void smallInput(){
 
     }else{
         system("clear");
-        cout << "\n\tNot a valid input!";
-        cout << "\n\n";
-        largeInput();
+        cout << "\n\tNot a valid input! It should be less than 10 inputs.\n";
     }
 
 }
@@ -54,9 +56,7 @@ void largeInput() {
         
     }else{
         system("clear");
-        cout << "\n\tNot a valid input!";
-        cout << "\n\n";
-        smallInput();
+        cout << "\n\tNot a valid input! It should be more than 10 inputs.\n";
     }
 }
 
