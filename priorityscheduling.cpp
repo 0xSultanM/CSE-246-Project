@@ -49,6 +49,10 @@ bool compare(priorityScheduling a, priorityScheduling b){
     return a.priorityLVL > b.priorityLVL;
 }
 
+bool comparePS(priorityScheduling a, priorityScheduling b){
+    return a.startTime < b.startTime;
+}
+
 void smallInput(){
     heroArea();
     cout << "\n\n\tHow many meetings? ( Only 1 to 10 ): ";
@@ -130,6 +134,41 @@ void largeInput() {
 }
 
 void printMeetings(vector<priorityScheduling> inputPS, int n){
+
+    i = 0;
+    double key = inputPS[i].priorityLVL;
+    int index = i;
+    while(key ==  inputPS[i+1].priorityLVL){
+        if(inputPS[i].startTime>inputPS[i+1].startTime){
+            i++;
+            key = inputPS[i].priorityLVL;
+            index = i;
+        }else{
+            i++;
+        }
+    }
+
+    vector<priorityScheduling> finalPS;
+
+    finalPS.push_back(inputPS[index]);
+
+    for(i=0;i<n;i++){
+        if(inputPS[i].startTime >= inputPS[index].endTime){
+            finalPS.push_back(inputPS[i]);
+            index = i;
+        }
+    }
+
+
+    index = 0;
+
+    for(i=0;i<n;i++){
+        if(inputPS[i].endTime <= finalPS[index].startTime){
+            finalPS.push_back(inputPS[i]);
+            index = finalPS.size()-1;
+        }
+    }
+
     system("clear");
     heroArea();
     cout<< "\n\n";
@@ -138,8 +177,21 @@ void printMeetings(vector<priorityScheduling> inputPS, int n){
     cout<< left << setw(12) << "\t-------" << setw(12) << "----------" << setw(12) << "----------" << setw(12) << "--------" << setw(12) << "--------------";
     cout << "\n";
 
-    for(i=0;i<n;i++){
-        cout<< left << "\t" << setw(12) << i+1 << setw(12) << inputPS[i].meetingID << setw(12) << inputPS[i].startTime << setw(12) << inputPS[i].endTime << setw(12) << inputPS[i].payment << "\n";
+    for(i=0;i<finalPS.size();i++){
+        cout<< left << "\t" << setw(12) << i+1 << setw(12) << finalPS[i].meetingID << setw(12) << finalPS[i].startTime << setw(12) << finalPS[i].endTime << setw(12) << finalPS[i].payment << "\n";
+    }
+
+    stable_sort(finalPS.begin(),finalPS.end(),comparePS);
+
+    cout << "\n\n\tSorted list of Scheduled Meetings:\n";
+    cout << "\t----------------------------------\n\n";
+    cout << left << setw(12) << "\tSlot No" << setw(12) << "Meeting ID" << setw(12) << "Start Time" << setw(12) << "End Time" << setw(12) << "Payment Amount";
+    cout << "\n";
+    cout<< left << setw(12) << "\t-------" << setw(12) << "----------" << setw(12) << "----------" << setw(12) << "--------" << setw(12) << "--------------";
+    cout << "\n";
+
+    for(i=0;i<finalPS.size();i++){
+        cout<< left << "\t" << setw(12) << i+1 << setw(12) << finalPS[i].meetingID << setw(12) << finalPS[i].startTime << setw(12) << finalPS[i].endTime << setw(12) << finalPS[i].payment << "\n";
     }
 }
 
