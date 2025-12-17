@@ -1,14 +1,28 @@
 #include<iostream>
 #include<algorithm>
 #include<vector>
-#include <iomanip>
+#include<cmath>
+#include<iomanip>
 
 using namespace std;
 
 int64_t i,j,n,num;
 
+struct priorityScheduling
+{
+    int meetingID;
+    double startTime;
+    double endTime;
+    double duration;
+    double multiplier;
+    double payment;
+    double priorityLVL;
+};
+
+
 void largeInput();
 void breakFunction();
+void printMeetings(vector<priorityScheduling> inputPS, int n);
 
 void heroArea(){
     cout << "\t\t-------------------------------------------------\n";
@@ -31,13 +45,68 @@ void breakFunction(){
     cin.get();
 }
 
+bool compare(priorityScheduling a, priorityScheduling b){
+    return a.priorityLVL > b.priorityLVL;
+}
+
 void smallInput(){
     heroArea();
     cout << "\n\n\tHow many meetings? ( Only 1 to 10 ): ";
     cin >> n;
 
-    if(n <=10){
-        cout << "hello!";
+    if(n <=10 && n >> 0){
+        system("clear");
+        heroArea();
+
+        vector<priorityScheduling> inputPS(n);
+
+        cout << "\n\tMake sure to type the meeting time as follow ( From 10:00 to 18:00 ):\n\t\t01) Type 11.00 for 11:00 AM\n\t\t02) Type 18.00 for 06:00 PM\n\n\tNote: We don't support 11:30 AM or 02:30 PM slot for meeting!\n";
+        cout << "\n\tBase amount is 1000, so you can select the multiplier based on your budget!\n\t\t 01) Type 1.0 to pay 1000\n\t\t 02) Type 1.2 to pay 1200\n\t\t 03) Type 1.5 to pay 1500\n\t\t 04) Type 2.2 to pay 2000";
+        breakFunction();
+
+        for(i=0;i<n;i++){
+            system("clear");
+            heroArea();
+            cout << "\n\tEnter the Job details:";
+            inputPS[i].meetingID = i+1;
+            while (1){
+                cout << "\n\t\tStart Time: ";
+                cin >> inputPS[i].startTime;
+                if((inputPS[i].startTime - floor(inputPS[i].startTime)) != 0.0 || inputPS[i].startTime < 10.00 || inputPS[i].startTime > 17.00){
+                    cout << "\t\tNot Valid Time. Type again between 10:00 to 17:00 !!\n";
+                } else {
+                    break;
+                }
+            }
+            
+            while(1){
+                cout << "\t\tEnd Time: ";
+                cin >> inputPS[i].endTime;
+                if((inputPS[i].endTime - floor(inputPS[i].endTime)) != 0.0 || inputPS[i].endTime < inputPS[i].startTime || inputPS[i].endTime > 18.00 || inputPS[i].endTime < 11.00){
+                    cout << "\t\tNot valid ending time, must be more than start time and less than 18:00 !!\n";
+                }else{
+                    break;
+                }
+            }
+
+            inputPS[i].duration = inputPS[i].endTime - inputPS[i].startTime;
+
+            while(1){
+                cout << "\t\tMultiplier (1.1 / 1.2 / 1.5 / 2.0 ): ";
+                cin >> inputPS[i].multiplier;
+                if(inputPS[i].multiplier == 1.1 || inputPS[i].multiplier == 1.2 || inputPS[i].multiplier == 1.5 || inputPS[i].multiplier == 2.0){
+                    break;
+                }else{
+                    cout << "\t\tNot Valid Multiplier.\n";
+                }
+            }
+
+            inputPS[i].payment = 1000 * inputPS[i].multiplier;
+            inputPS[i].priorityLVL = inputPS[i].payment / (inputPS[i].duration * 60);
+        }
+
+        stable_sort(inputPS.begin(), inputPS.end(), compare);
+        printMeetings(inputPS,n);
 
     }else{
         system("clear");
@@ -52,11 +121,25 @@ void largeInput() {
     cin >> n;
 
     if(n>=10){
-        cout << "world!";
+        
         
     }else{
         system("clear");
         cout << "\n\tNot a valid input! It should be more than 10 inputs.\n";
+    }
+}
+
+void printMeetings(vector<priorityScheduling> inputPS, int n){
+    system("clear");
+    heroArea();
+    cout<< "\n\n";
+    cout << left << setw(12) << "\tSlot No" << setw(12) << "Meeting ID" << setw(12) << "Start Time" << setw(12) << "End Time" << setw(12) << "Payment Amount";
+    cout << "\n";
+    cout<< left << setw(12) << "\t-------" << setw(12) << "----------" << setw(12) << "----------" << setw(12) << "--------" << setw(12) << "--------------";
+    cout << "\n";
+
+    for(i=0;i<n;i++){
+        cout<< left << "\t" << setw(12) << i+1 << setw(12) << inputPS[i].meetingID << setw(12) << inputPS[i].startTime << setw(12) << inputPS[i].endTime << setw(12) << inputPS[i].payment << "\n";
     }
 }
 
@@ -68,7 +151,7 @@ int main(){
         cout << "\n\t\t1. 0-10 Meetings";
         cout << "\n\t\t2. 10+ Meetings";
         cout << "\n\t\t0. Exit";
-        cout << "\n\n\t\t";
+        cout << "\n\n\tInput: ";
 
         cin >> n;
         switch (n)
@@ -79,9 +162,9 @@ int main(){
         default:
             system("clear");
             cout << "\n\n\tNot a valid choice. Kindly select again!\n\n";
+            breakFunction();
             break;
         }
     }
     
 }
-
