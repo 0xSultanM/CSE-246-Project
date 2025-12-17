@@ -96,9 +96,9 @@ void smallInput(){
             inputPS[i].duration = inputPS[i].endTime - inputPS[i].startTime;
 
             while(1){
-                cout << "\t\tMultiplier (1.1 / 1.2 / 1.5 / 2.0 ): ";
+                cout << "\t\tMultiplier (1.0 / 1.1 / 1.2 / 1.5 / 2.0 ): ";
                 cin >> inputPS[i].multiplier;
-                if(inputPS[i].multiplier == 1.1 || inputPS[i].multiplier == 1.2 || inputPS[i].multiplier == 1.5 || inputPS[i].multiplier == 2.0){
+                if(inputPS[i].multiplier == 1.0 || inputPS[i].multiplier == 1.1 || inputPS[i].multiplier == 1.2 || inputPS[i].multiplier == 1.5 || inputPS[i].multiplier == 2.0){
                     break;
                 }else{
                     cout << "\t\tNot Valid Multiplier.\n";
