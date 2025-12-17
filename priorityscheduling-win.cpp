@@ -138,32 +138,20 @@ void largeInput() {
 
 void printMeetings(vector<priorityScheduling> inputPS, int n){
 
-    i = 0;
-    double key = inputPS[i].priorityLVL;
-    int index = i;
-    while(key ==  inputPS[i+1].priorityLVL){
-        if(inputPS[i].startTime>inputPS[i+1].startTime){
-            i++;
-            key = inputPS[i].priorityLVL;
-            index = i;
-        }else{
-            i++;
-        }
-    }
-
     vector<priorityScheduling> finalPS;
 
-    finalPS.push_back(inputPS[index]);
+    finalPS.push_back(inputPS[0]);
 
-    for(i=0;i<n;i++){
-        if(inputPS[i].startTime >= inputPS[index].endTime){
+    int lastSelected = 0;
+
+    for(i=1;i<n;i++){
+        if(inputPS[i].startTime >= inputPS[lastSelected].endTime){
             finalPS.push_back(inputPS[i]);
-            index = i;
+            lastSelected = i;
         }
     }
 
-
-    index = 0;
+    int index = 0;
 
     for(i=0;i<n;i++){
         if(inputPS[i].endTime <= finalPS[index].startTime){
